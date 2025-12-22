@@ -16,12 +16,6 @@ Your project is live at:
 
 **[https://vercel.com/kcode727s-projects/v0-integration-test-case-generation](https://vercel.com/kcode727s-projects/v0-integration-test-case-generation)**
 
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.app/chat/kZoosn7VJE8](https://v0.app/chat/kZoosn7VJE8)**
-
 ## How It Works
 
 1. Create and modify your project using [v0.app](https://v0.app)
