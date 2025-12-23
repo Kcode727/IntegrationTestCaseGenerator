@@ -19,62 +19,48 @@ export default function TestCaseGenerator() {
 
   const handleGenerate = async () => {
     if (!inputText.trim()) return
-
     setIsGenerating(true)
-
-    // Simulate API call to generate test cases
     await new Promise((resolve) => setTimeout(resolve, 2000))
-
     const generatedCases =
       inputType === "user-story" ? generateFromUserStory(inputText) : generateFromApiContract(inputText)
-
     setTestCases(generatedCases)
     setIsGenerating(false)
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-background">
+    <div className="flex flex-col h-screen bg-background overflow-hidden">
+      {/* Mobile View Tabs */}
       <div className="lg:hidden border-b border-border bg-background">
         <div className="flex">
-          <button
-            onClick={() => setMobileView("input")}
-            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-              mobileView === "input" ? "text-foreground border-b-2 border-primary" : "text-muted-foreground"
-            }`}
-          >
-            Input
-          </button>
-          <button
-            onClick={() => setMobileView("output")}
-            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-              mobileView === "output" ? "text-foreground border-b-2 border-primary" : "text-muted-foreground"
-            }`}
-          >
-            Output {testCases.length > 0 && `(${testCases.length})`}
-          </button>
+          {["input", "output"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setMobileView(tab as "input" | "output")}
+              className={`flex-1 px-5 py-3 text-sm font-semibold transition-all duration-200 ${
+                mobileView === tab
+                  ? "text-foreground border-b-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {tab === "output" && testCases.length > 0 ? `Output (${testCases.length})` : tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
         </div>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Input Section */}
         <div
-          className={`w-full lg:w-1/2 border-r border-border overflow-y-auto ${
+          className={`w-full lg:w-1/2 overflow-y-auto border-r border-border transition-all duration-300 ${
             mobileView === "output" ? "hidden lg:block" : ""
           }`}
         >
-          <div className="bg-background border-b border-border">
-            <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Integration Test Case Generator</h1>
-              <p className="mt-2 text-sm sm:text-base text-muted-foreground">
-                Generate comprehensive integration test cases from user stories or API contracts
-              </p>
-            </div>
-          </div>
 
-          <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto space-y-6">
-            <Card className="p-4 sm:p-6">
+          <div className="max-w-3xl mx-auto p-6 lg:p-8 space-y-6">
+            {/* Input Card */}
+            <Card className="border-none p-6 lg:p-8 shadow-xl hover:shadow-xl transition-shadow duration-300">
               <Tabs value={inputType} onValueChange={(v) => setInputType(v as typeof inputType)}>
-                <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsList className="grid w-full grid-cols-2 mb-6 rounded-md bg-muted/20 p-1">
                   <TabsTrigger value="user-story">User Story</TabsTrigger>
                   <TabsTrigger value="api-contract">API Contract</TabsTrigger>
                 </TabsList>
@@ -109,7 +95,7 @@ export default function TestCaseGenerator() {
               <Button
                 onClick={handleGenerate}
                 disabled={!inputText.trim() || isGenerating}
-                className="w-full mt-6"
+                className="w-full mt-6 bg-primary hover:bg-primary/90 transition-colors duration-200"
                 size="lg"
               >
                 {isGenerating ? (
@@ -125,22 +111,14 @@ export default function TestCaseGenerator() {
                 )}
               </Button>
             </Card>
-
-            {/* Feature Highlights */}
-            {testCases.length === 0 && (
-              <div className="grid gap-4 sm:grid-cols-2">
-                <FeatureCard title="Smart Analysis" description="Understands user intent and API structure" />
-                <FeatureCard title="Complete Coverage" description="Positive, negative, and edge cases included" />
-                <FeatureCard title="Jest Ready" description="Outputs clean, readable Jest test code" />
-                <FeatureCard title="Best Practices" description="AAA pattern and integration-friendly tests" />
-              </div>
-            )}
           </div>
         </div>
 
         {/* Output Section */}
         <div
-          className={`w-full lg:w-1/2 bg-muted/40 overflow-hidden ${mobileView === "input" ? "hidden lg:block" : ""}`}
+          className={`w-full lg:w-1/2 bg-muted/20 backdrop-blur-md transition-all duration-300 overflow-auto ${
+            mobileView === "input" ? "hidden lg:block" : ""
+          }`}
         >
           <TestCaseOutput testCases={testCases} isGenerating={isGenerating} />
         </div>
@@ -149,12 +127,10 @@ export default function TestCaseGenerator() {
   )
 }
 
-export { TestCaseGenerator }
-
 function FeatureCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="p-4 rounded-lg border border-border bg-card">
-      <h4 className="font-medium mb-1">{title}</h4>
+    <div className="p-4 rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow duration-200">
+      <h4 className="font-semibold mb-1 text-foreground">{title}</h4>
       <p className="text-sm text-muted-foreground">{description}</p>
     </div>
   )
