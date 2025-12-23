@@ -39,7 +39,7 @@ This tool helps developers, QA engineers, and product teams quickly create struc
 
 ## Live Demo
 
-https://v0-integration-test-case-generation.vercel.app  
+[https://v0-integration-test-case-generation.vercel.app ](https://integration-test-case-generator.vercel.app/) 
 
 ## Usage
 
